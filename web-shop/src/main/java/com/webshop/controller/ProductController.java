@@ -190,6 +190,12 @@ public class ProductController {
      * @param pageable
      * @return
      */
+    @GetMapping("/count")
+    public long totalProducts(@RequestParam int size) {
+
+        long totalPages = productService.getTotalNumberOfPages(size);
+        return totalPages;
+    }
     @GetMapping("/search")
     public List<BasicProductDto> searchProducts(@RequestParam String search, Pageable pageable) {
         List<BasicProductDto> products = productService.searchProducts(search, pageable);

@@ -24,6 +24,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
     List<Product> findAll();
 
+    long count();
+
     Product save(Product product);
 
     Page<Product> findByCategory(Category category, Pageable pageable);
