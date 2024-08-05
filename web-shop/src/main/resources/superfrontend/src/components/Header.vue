@@ -1,13 +1,19 @@
 <template>
   <header>
     <main>
-      <section class="bg-black"></section>
+      <transition name="menu-transition">
+        <Menu v-if="menuToggle" @close="toggleMenu" ref="menu" />
+      </transition>
+      <transition name="cart-transition">
+        <PopupCart v-if="cartToggle" @close="toggleCart" ref="cart" />
+      </transition>
+
       <section class="bg-black">
         <div
           class="flex flex-col lg:flex-row lg:items-center lg:justify-center bg-black mx-auto lg:w-[1024px]"
         >
           <div class="flex flex-row justify-between items-center px-4 py-3">
-            <button>
+            <button @click="toggleMenu">
               <!-- TODO: hamburger meni -->
               <svg
                 class="fill-white lg:w-0 w-[25px] py-2 my-[-40px]"
@@ -24,12 +30,15 @@
               </svg>
             </button>
             <!-- LOGO -->
-            <img
-              class="mx-auto w-[145px] lg:w-[200px] py-2"
-              src="../../public/assets/logo.svg"
-            />
+            <RouterLink to="/" class="mx-auto">
+              <img
+                class="mx-auto w-[145px] lg:w-[200px] py-2"
+                src="../../public/assets/logo.svg"
+              />
+            </RouterLink>
 
             <!-- PROFILE PICTURE -->
+
             <svg
               class="w-[25px] lg:w-0"
               viewBox="0 0 24 24"
@@ -52,25 +61,27 @@
               </g>
             </svg>
             <!-- SHOPPING CART -->
-            <svg
-              class="ml-2 w-[25px] lg:w-0"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="#ffffff"
-            >
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                <path
-                  d="M6.787 15.981l14.11-1.008L23.141 6H5.345L5.06 4.37a1.51 1.51 0 0 0-1.307-1.23l-2.496-.286-.114.994 2.497.286a.502.502 0 0 1 .435.41l1.9 10.853-.826 1.301A1.497 1.497 0 0 0 6 18.94v.153a1.5 1.5 0 1 0 1 0V19h11.5a.497.497 0 0 1 .356.15 1.502 1.502 0 1 0 1.074-.08A1.497 1.497 0 0 0 18.5 18H6.416a.5.5 0 0 1-.422-.768zM19.5 21a.5.5 0 1 1 .5-.5.5.5 0 0 1-.5.5zm-13 0a.5.5 0 1 1 .5-.5.5.5 0 0 1-.5.5zM21.86 7l-1.757 7.027-13.188.942L5.52 7z"
-                ></path>
-                <path fill="none" d="M0 0h24v24H0z"></path>
-              </g>
-            </svg>
+            <button @click="toggleCart">
+              <svg
+                class="ml-2 w-[25px] lg:w-0"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="#ffffff"
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M6.787 15.981l14.11-1.008L23.141 6H5.345L5.06 4.37a1.51 1.51 0 0 0-1.307-1.23l-2.496-.286-.114.994 2.497.286a.502.502 0 0 1 .435.41l1.9 10.853-.826 1.301A1.497 1.497 0 0 0 6 18.94v.153a1.5 1.5 0 1 0 1 0V19h11.5a.497.497 0 0 1 .356.15 1.502 1.502 0 1 0 1.074-.08A1.497 1.497 0 0 0 18.5 18H6.416a.5.5 0 0 1-.422-.768zM19.5 21a.5.5 0 1 1 .5-.5.5.5 0 0 1-.5.5zm-13 0a.5.5 0 1 1 .5-.5.5.5 0 0 1-.5.5zM21.86 7l-1.757 7.027-13.188.942L5.52 7z"
+                  ></path>
+                  <path fill="none" d="M0 0h24v24H0z"></path>
+                </g>
+              </svg>
+            </button>
           </div>
           <div class="flex-grow lg:ml-4">
             <form class="w-full px-2 py-2 mx-auto">
@@ -126,6 +137,8 @@
           </svg>
         </div>
       </section>
+
+      <section class="bg-black"></section>
     </main>
   </header>
 </template>
@@ -137,7 +150,61 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
 }
+
+.menu-transition-enter-active,
+.menu-transition-leave-active {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+.menu-transition-enter-from,
+.menu-transition-leave-to {
+  transform: translateX(-400px);
+}
+.menu-transition-enter-to,
+.menu-transition-leave-from {
+  transform: translateX(0);
+}
+
+.cart-transition-enter-active,
+.cart-transition-leave-active {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+.cart-transition-enter-from,
+.cart-transition-leave-to {
+  height: 0px;
+}
+.cart-transition-enter-to,
+.cart-transition-leave-from {
+  height: 200px;
+}
 </style>
 <script>
-export default {};
+import Menu from "../components/Menu.vue";
+import PopupCart from "../components/PopupCart.vue";
+export default {
+  data() {
+    return {
+      menuToggle: false,
+      cartToggle: false,
+    };
+  },
+  methods: {
+    toggleCart() {
+      this.cartToggle = !this.cartToggle;
+    },
+    toggleMenu() {
+      this.menuToggle = !this.menuToggle;
+      if (this.menuToggle) {
+        document.body.style.overflow = "hidden";
+        document.addEventListener("click", this.handleClickOutside);
+      } else {
+        document.body.style.overflow = "auto";
+        document.removeEventListener("click", this.handleClickOutside);
+      }
+    },
+  },
+  components: {
+    Menu,
+    PopupCart,
+  },
+};
 </script>
