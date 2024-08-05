@@ -7,11 +7,23 @@ const router = createRouter({
       name: "home",
       component: () => import("../views/Home.vue"),
     },
+    {
+      path: "/products",
+      name: "products",
+      component: () => import("../views/ProductsGridView.vue"),
+    },
+    {
+      path: "/products/:id",
+      name: "product",
+      component: () => import("../views/ProductView.vue"),
+      props: true,
+    },
   ],
 });
 router.beforeEach(async (to, from, next) => {
   const publicPages = [
     "/",
+    "/menu",
     "/products",
     "/products/catchAll(*)",
     "/login",
