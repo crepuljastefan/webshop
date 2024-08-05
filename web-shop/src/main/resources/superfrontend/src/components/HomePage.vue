@@ -1,6 +1,6 @@
 <template>
-  <section class="bg-gray-200 p-4">
-    <div class="w-full bg-white">
+  <div class="bg-gray-200 p-4">
+    <section class="w-full rounded-md bg-white">
       <div>
         <!-- TODO: NAPRAVITI SLAJDER ZA SLIKE I BRENDOVE!-->
         <div class="flex flex-row justify-center items-center">
@@ -9,32 +9,54 @@
           <img class="mx-4 w-1/4" src="../../public/assets/ck.svg" alt="" />
         </div>
       </div>
-    </div>
-    <div class="flex flex-col w-full bg-white my-3">
-      <h2 class="text-lg text-center font-semibold font-['Cousine']">
+    </section>
+    <section class="flex flex-col w-full bg-white my-2">
+      <h2 class="text-lg text-center py-4 font-semibold font-['Cousine']">
         IZDVOJENO
       </h2>
       <!-- TODO: NAPRAVITI SLAJDER ZA SLIKE I BRENDOVE!-->
-      <div class="flex flex-row font-['Cousine']">
-        <div>
-          <img class="" src="../../public/assets/joradn.webp" alt="" />
-          <p class="text-center">Nike Air Jordan I</p>
-        </div>
-        <div>
-          <img class="" src="../../public/assets/tn1.webp" alt="" />
-
-          <p class="text-center">Nike Air Max Plus</p>
-        </div>
-        <div>
-          <img class="" src="../../public/assets/tn2.webp" alt="" />
-
-          <p class="text-center">Nike Vapormax Plus</p>
-        </div>
+      <div class="flex flex-row text-sm text-wrap font-['Cousine']">
+        <div v-if="loading">Products se ucitavaju</div>
+        <Product
+          v-else
+          v-for="product in products"
+          :key="product.id"
+          :product="product"
+        />
       </div>
-    </div>
-  </section>
+    </section>
+    <section class="bg-white my-2">
+      <img src="../../public/assets/sale.jpeg" />
+    </section>
+    <section class="bg-white my-2">
+      <img src="../../public/assets/model1.webp" />
+    </section>
+    <section class="bg-white my-2">
+      <img src="../../public/assets/model2.avif" alt="" />
+    </section>
+  </div>
 </template>
 <script>
-export default {};
+import Product from "../components/ProductComp.vue";
+import Menu from "../components/Menu.vue";
+import { fetchSomeProducts } from "../components/utils.js";
+export default {
+  name: "HomePage",
+  components: {
+    Product,
+    Menu,
+  },
+  data() {
+    return {
+      products: [],
+      realprods: [],
+      fetchSomeProducts,
+      loading: true,
+    };
+  },
+  created() {
+    this.fetchSomeProducts(this.products, 2);
+  },
+};
 </script>
 <style scoped></style>
