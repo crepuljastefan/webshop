@@ -29,7 +29,7 @@
         <p class="my-1 text-sm text-white font-['Cousine']">Page</p>
       </div>
       <h4 class="mt-8 text-center px-4 text-sm text-white font-['Cousine']">
-        Copyright ©2024-20xx TwizzyShop.
+        Copyright ©2024 TwizzyShop.
       </h4>
       <h4 class="text-center mx-4 text-sm text-white font-['Cousine']">
         Sva prava su zadržana.
